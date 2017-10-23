@@ -102,7 +102,7 @@ public class IdentifyingCodeView extends RelativeLayout {
         }
         mTextViews = new TextView[etNumber];
         for (int i = 0; i < mTextViews.length; i++) {
-            TextView textView = new EditText(context);
+            TextView textView = new TextView(context);
             textView.setTextSize(etTextSize);
             textView.setTextColor(etTextColor);
             textView.setWidth(etWidth);
