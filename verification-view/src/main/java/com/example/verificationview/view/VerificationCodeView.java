@@ -207,7 +207,7 @@ public class VerificationCodeView extends RelativeLayout {
     /**
      * 获取输入文本
      *
-     * @return
+     * @return string
      */
     public String getTextContent() {
         StringBuffer buffer = new StringBuffer();
@@ -235,7 +235,7 @@ public class VerificationCodeView extends RelativeLayout {
     /**
      * 获取输入的位数
      *
-     * @return
+     * @return int
      */
     public int getTextCount() {
         return mEtNumber;
