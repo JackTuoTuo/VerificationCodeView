@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 自定义验证码输入框-->
-    <declare-styleable name="IdentifyingCodeView">
+    <declare-styleable name="VerificationCodeView">
         <!--输入框的数量-->
         <attr name="icv_et_number" format="integer" />
         <!--输入框的宽度-->

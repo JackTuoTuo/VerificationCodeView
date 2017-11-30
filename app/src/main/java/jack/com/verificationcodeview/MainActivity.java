@@ -1,23 +1,24 @@
 package jack.com.verificationcodeview;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import jack.com.verificationcodeview.view.IdentifyingCodeView;
+import com.example.verificationview.view.VerificationCodeView;
+
 
 public class MainActivity extends AppCompatActivity {
-    private IdentifyingCodeView icv;
+    private VerificationCodeView icv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        icv = (IdentifyingCodeView) findViewById(R.id.icv);
+        icv = (VerificationCodeView) findViewById(R.id.icv);
 
-        icv.setInputCompleteListener(new IdentifyingCodeView.InputCompleteListener() {
+        icv.setInputCompleteListener(new VerificationCodeView.InputCompleteListener() {
             @Override
             public void inputComplete() {
                 Log.i("icv_input", icv.getTextContent());

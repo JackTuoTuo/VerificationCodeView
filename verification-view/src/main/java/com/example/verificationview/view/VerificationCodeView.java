@@ -1,4 +1,4 @@
-package jack.com.verificationcodeview.view;
+package com.example.verificationview.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -26,7 +26,7 @@ import jack.com.verificationcodeview.R;
  * 邮箱：839539179@qq.com
  */
 
-public class IdentifyingCodeView extends RelativeLayout {
+public class VerificationCodeView extends RelativeLayout {
 
     private LinearLayout containerEt;
 
@@ -50,15 +50,15 @@ public class IdentifyingCodeView extends RelativeLayout {
     private TextView[] mTextViews;
 
 
-    public IdentifyingCodeView(Context context) {
+    public VerificationCodeView(Context context) {
         this(context, null);
     }
 
-    public IdentifyingCodeView(Context context, AttributeSet attrs) {
+    public VerificationCodeView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public IdentifyingCodeView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public VerificationCodeView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr);
     }

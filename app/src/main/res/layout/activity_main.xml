@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <jack.com.verificationcodeview.view.IdentifyingCodeView
+    <com.example.verificationview.view.VerificationCodeView
         android:id="@+id/icv"
         android:layout_width="match_parent"
         android:layout_height="50dp"
