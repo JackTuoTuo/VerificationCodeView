@@ -47,11 +47,12 @@ apply plugin: 'com.novoda.bintray-release'//添加
 //添加
 publish {
     userOrg = 'jacktuotuo'//用户名
+    repoName = 'maven'    //仓库的名字
     groupId = 'com.jacktuotuo.customview'//jcenter上的路径
     artifactId = 'verificationview'//项目名称
     publishVersion = '1.0.0'//版本号
-    desc = 'A library containing custom view verification code view'//描述
+    desc = 'a custom View of the square verification code input box'//描述
     website = 'http://blog.csdn.net/qq_33553515'//个人网站
 }
 
-// 最终引用路径 compile 'com.jacktuotuo.customview:verification-view:1.0.0
+// 最终引用路径 compile 'com.jacktuotuo.customview:verificationview:1.0.0
