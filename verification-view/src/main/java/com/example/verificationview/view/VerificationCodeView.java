@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import jack.com.verificationcodeview.R;
+import com.example.verificationview.R;
 
 
 /**
@@ -69,14 +69,14 @@ public class VerificationCodeView extends RelativeLayout {
         containerEt = (LinearLayout) this.findViewById(R.id.container_et);
         et = (EditText) this.findViewById(R.id.et);
 
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.IdentifyingCodeView, defStyleAttr, 0);
-        mEtNumber = typedArray.getInteger(R.styleable.IdentifyingCodeView_icv_et_number, 1);
-        mEtWidth = typedArray.getDimensionPixelSize(R.styleable.IdentifyingCodeView_icv_et_width, 42);
-        mEtDividerDrawable = typedArray.getDrawable(R.styleable.IdentifyingCodeView_icv_et_divider_drawable);
-        mEtTextSize = typedArray.getDimensionPixelSize(R.styleable.IdentifyingCodeView_icv_et_text_size, 16);
-        mEtTextColor = typedArray.getColor(R.styleable.IdentifyingCodeView_icv_et_text_color, Color.WHITE);
-        mEtBackgroundDrawableFocus = typedArray.getDrawable(R.styleable.IdentifyingCodeView_icv_et_bg_focus);
-        mEtBackgroundDrawableNormal = typedArray.getDrawable(R.styleable.IdentifyingCodeView_icv_et_bg_normal);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VerificationCodeView, defStyleAttr, 0);
+        mEtNumber = typedArray.getInteger(R.styleable.VerificationCodeView_icv_et_number, 1);
+        mEtWidth = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_width, 42);
+        mEtDividerDrawable = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_divider_drawable);
+        mEtTextSize = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_text_size, 16);
+        mEtTextColor = typedArray.getColor(R.styleable.VerificationCodeView_icv_et_text_color, Color.WHITE);
+        mEtBackgroundDrawableFocus = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_bg_focus);
+        mEtBackgroundDrawableNormal = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_bg_normal);
         //释放资源
         typedArray.recycle();
     }
