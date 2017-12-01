@@ -65,13 +65,13 @@ implementation 'com.jacktuotuo.customview:verificationcodeview:1.0.0'
 --------
 #### 1 在1.0.0 版本中还不支持在Java文件中动态设置输入框个数，该问题将在1.0.1版本中进行优化 。等不及的同学可fork代码自行修改，也可以修改之后再本项目提交。
 
-### TODO
+## TODO
 --------
 #### 1 支持在Java中动态设置输入框个数
 #### 2 支持密码模式
 
 
-### License
+## License
 --------
 Copyright 2017 JackTuoTuo
 
