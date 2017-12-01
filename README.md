@@ -75,13 +75,13 @@ implementation 'com.jacktuotuo.customview:verificationcodeview:1.0.0'
 
 
 
-## TODO
+### TODO
 ---------
 #### 1 支持在Java中动态设置输入框个数
 #### 2 支持密码模式
 
 
-## License
+### License
 ---------
 Copyright 2017 JackTuoTuo
 
