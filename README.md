@@ -5,7 +5,7 @@ VerificationCodeView
 
 ### 示例:
 --------
-![image](https://github.com/JackTuoTuo/VerificationCodeView/blob/master/demo.png)  ![image](https://github.com/JackTuoTuo/VerificationCodeView/blob/master/GIF.gif)
+![image](https://github.com/JackTuoTuo/VerificationCodeView/blob/master/GIF.gif)
 
 
 
