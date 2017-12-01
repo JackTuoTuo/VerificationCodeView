@@ -1,4 +1,4 @@
-package com.example.verificationview.view;
+package com.tuo.customview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -16,8 +16,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.example.verificationview.R;
 
 
 /**

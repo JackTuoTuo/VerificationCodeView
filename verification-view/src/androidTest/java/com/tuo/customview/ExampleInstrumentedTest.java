@@ -1,4 +1,4 @@
-package com.example.verificationview;
+package com.tuo.customview;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

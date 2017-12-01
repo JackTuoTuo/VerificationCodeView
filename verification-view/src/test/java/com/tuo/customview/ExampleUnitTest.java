@@ -1,4 +1,4 @@
-package com.example.verificationview;
+package com.tuo.customview;
 
 import org.junit.Test;
 

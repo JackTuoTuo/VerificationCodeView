@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.example.verificationview.view.VerificationCodeView;
+import com.tuo.customview.VerificationCodeView;
 
 
 public class MainActivity extends AppCompatActivity {
