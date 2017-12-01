@@ -30,19 +30,27 @@ VerificationCodeView
 在布局文件的LinearLayout中动态添加正方形输入框，正方形输入框其实是一个个的TextView。
 
 
-
-### 下载安装
---------
-Gradle:  
-``` xml
-implementation 'com.jacktuotuo.customview:verificationcodeview:1.0.0'
-```
-
-
-
 ### 使用方法
 --------
-#### 1 xml中使用
+
+#### 1 Gradle引用
+``` xml
+implementation 'com.jacktuotuo.customview:verificationcodeview:1.0.0'
+
+```
+#### 2 支持的自定义属性
+|name|说明|format|默认值|
+|:--|:--|:--|:--:|
+|icv_et_number|输入框的数量|integer|```1```|
+|icv_et_width|输入框的宽度|dimension|```42dp```|
+|icv_et_divider_drawable|输入框之间的间隔|reference|```默认图片```|
+|icv_et_text_color|输入框文字颜色|color|```Color.WHITE```|
+|icv_et_text_size|输入框文字大小|dimension|```16sp```|
+|icv_et_bg_focus|输入框获取焦点时边框|reference|```默认边框```|
+|icv_et_bg_normal|输入框没有焦点时边框|reference|```默认边框```|
+
+
+#### 3 xml中使用
 ``` xml
 <com.tuo.customview.VerificationCodeView
         android:id="@+id/icv"
@@ -59,17 +67,6 @@ implementation 'com.jacktuotuo.customview:verificationcodeview:1.0.0'
         app:icv_et_text_color="#000000"
         app:icv_et_width="50dp" />
 ```
-#### 2 支持的自定义属性
-|name|说明|format|默认值|
-|:--|:--|:--|:--:|
-|icv_et_number|输入框的数量|integer|```1```|
-|icv_et_width|输入框的宽度|dimension|```42dp```|
-|icv_et_divider_drawable|输入框之间的间隔|reference|```默认图片```|
-|icv_et_text_color|输入框文字颜色|color|```Color.WHITE```|
-|icv_et_text_size|输入框文字大小|dimension|```16sp```|
-|icv_et_bg_focus|输入框获取焦点时边框|reference|```默认边框```|
-|icv_et_bg_normal|输入框没有焦点时边框|reference|```默认边框```|
-
 
 
 ### 注意事项
