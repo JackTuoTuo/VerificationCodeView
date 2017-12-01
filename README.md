@@ -1,4 +1,4 @@
-更多请移步至：[我的CSDN博客](http://blog.csdn.net/qq_33553515/article/details/73344155)  　　　　apk演示：[点击下载](https://github.com/liaoinstan/SpringView/blob/master/apk/demo-release.apk?raw=true) 
+更多请移步至：[我的CSDN博客](http://blog.csdn.net/qq_33553515/article/details/73344155)  　　　　apk演示：[点击下载](https://github.com/JackTuoTuo/VerificationCodeView/blob/master/app-debug.apk?raw=true) 
 
 
 VerificationCodeView
