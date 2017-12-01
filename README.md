@@ -1,4 +1,7 @@
-更多请移步至：[我的CSDN博客](http://blog.csdn.net/qq_33553515/article/details/73344155)  　　　　apk演示：[点击下载](https://github.com/JackTuoTuo/VerificationCodeView/blob/master/app-debug.apk?raw=true) 
+
+
+
+**更多请移步至**：[我的CSDN博客](http://blog.csdn.net/qq_33553515/article/details/73344155)  QQ:839539179   WEIXIN:tuojie003　　　　
 
 
 VerificationCodeView
@@ -8,9 +11,9 @@ VerificationCodeView
 
 ### 示例:
 --------
-![image](https://github.com/JackTuoTuo/VerificationCodeView/blob/master/GIF.gif)
+![动图演示](https://github.com/JackTuoTuo/VerificationCodeView/blob/master/GIF.gif)
 
-
+apk演示：[点击下载](https://github.com/JackTuoTuo/VerificationCodeView/blob/master/app-debug.apk?raw=true) 
 
 ### 特性
 --------
