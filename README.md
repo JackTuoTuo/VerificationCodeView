@@ -54,7 +54,7 @@ apk演示：[点击下载](https://github.com/JackTuoTuo/VerificationCodeView/bl
 
 #### 1 Gradle引用
 ``` xml
-implementation 'com.jacktuotuo.customview:verificationcodeview:1.0.0'
+implementation 'com.jacktuotuo.customview:verificationcodeview:1.0.1'
 ```
 
 #### 2 xml中使用

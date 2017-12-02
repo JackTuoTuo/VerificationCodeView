@@ -50,7 +50,7 @@ publish {
     repoName = 'maven'    //仓库的名字
     groupId = 'com.jacktuotuo.customview'//jcenter上的路径
     artifactId = 'verificationcodeview'//项目名称
-    publishVersion = '1.0.0'//版本号
+    publishVersion = '1.0.1'//版本号
     desc = 'a custom View of the square verification code input box'//描述
     website = 'http://blog.csdn.net/qq_33553515'//个人网站
 }
