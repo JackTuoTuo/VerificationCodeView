@@ -17,13 +17,29 @@ apk演示：[点击下载](https://github.com/JackTuoTuo/VerificationCodeView/bl
 
 ### 特性
 --------
-- 支持xml文件中设置输入框个数
+#### 自定义属性
+|name|说明|format|默认值|
+|:--|:--|:--|:--:|
+|icv_et_number|输入框的数量|integer|```1```|
+|icv_et_width|输入框的宽度|dimension|```42dp```|
+|icv_et_divider_drawable|输入框之间的间隔|reference|```默认图片```|
+|icv_et_text_color|输入框文字颜色|color|```Color.WHITE```|
+|icv_et_text_size|输入框文字大小|dimension|```16sp```|
+|icv_et_bg_focus|输入框获取焦点时边框|reference|```默认边框```|
+|icv_et_bg_normal|输入框没有焦点时边框|reference|```默认边框```|
 
-- 支持xml文件中设置输入框背景
+#### 可使用方法
+|method_name|description|return_type|
+|:--|:--|:--|
+|getInputContent|获取输入内容|String|
+|clearInputContent|清空输入内容|Void|
+|setEtNumber(int etNumber)|设置输入框个数|Void|
+|getEtNumber|获取输入框个数|int|
+|setInputCompleteListener(InputCompleteListener istener) |设置输入和删除时的监听|Void|
 
-- 支持xml文件中设置输入框间距
 
-- 支持xml文件中设置输入框大小
+
+
 
 
 
@@ -39,21 +55,19 @@ apk演示：[点击下载](https://github.com/JackTuoTuo/VerificationCodeView/bl
 #### 1 Gradle引用
 ``` xml
 implementation 'com.jacktuotuo.customview:verificationcodeview:1.0.0'
-
 ```
-#### 2 支持的自定义属性
-|name|说明|format|默认值|
-|:--|:--|:--|:--:|
-|icv_et_number|输入框的数量|integer|```1```|
-|icv_et_width|输入框的宽度|dimension|```42dp```|
-|icv_et_divider_drawable|输入框之间的间隔|reference|```默认图片```|
-|icv_et_text_color|输入框文字颜色|color|```Color.WHITE```|
-|icv_et_text_size|输入框文字大小|dimension|```16sp```|
-|icv_et_bg_focus|输入框获取焦点时边框|reference|```默认边框```|
-|icv_et_bg_normal|输入框没有焦点时边框|reference|```默认边框```|
 
+#### 2 xml中使用
+- 简单配置
 
-#### 3 xml中使用
+``` xml
+<com.tuo.customview.VerificationCodeView
+        android:id="@+id/icv_1"
+        app:icv_et_number="5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+```
+- 个性化配置
 ``` xml
 <com.tuo.customview.VerificationCodeView
         android:id="@+id/icv"
@@ -71,17 +85,26 @@ implementation 'com.jacktuotuo.customview:verificationcodeview:1.0.0'
         app:icv_et_width="50dp" />
 ```
 
+#### 3 java代码中使用
+``` xml
+VerificationCodeView codeView = new VerificationCodeView(context);
+codeView.setEtNumber(number);
+```
 
-### 注意事项
+### Update Log
 --------
-#### 1 在1.0.0 版本中还不支持在Java文件中动态设置输入框个数，该问题将在1.0.1版本中进行优化 。等不及的同学可fork代码自行修改，也可以修改之后再本项目提交。
+#### version 1.0.1:
+- 支持Java代码中动态设置输入框个数
+- 支持xml中最只配置宽高，输入框个数默认为1
 
 
 
 ### TODO
 ---------
-#### 1 支持在Java中动态设置输入框个数
-#### 2 支持密码模式
+#### version-1.0.1
+ - 支持在Java中动态设置输入框个数
+#### version-1.0.2
+ - 支持密码模式
 
 
 ### License

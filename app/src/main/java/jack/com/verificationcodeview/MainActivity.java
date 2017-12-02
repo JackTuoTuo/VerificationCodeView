@@ -1,6 +1,5 @@
 package jack.com.verificationcodeview;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -23,20 +22,42 @@ public class MainActivity extends AppCompatActivity {
         icv = (VerificationCodeView) findViewById(R.id.icv);
 
 
-        VerificationCodeView codeView = new VerificationCodeView(this);
-        codeView.setBackgroundColor(Color.BLUE);
+        final VerificationCodeView codeView = new VerificationCodeView(this);
+
 
         content.addView(codeView);
 
         icv.setInputCompleteListener(new VerificationCodeView.InputCompleteListener() {
             @Override
             public void inputComplete() {
-                Log.i("icv_input", icv.getTextContent());
+                Log.i("icv_input", icv.getInputContent());
             }
 
             @Override
             public void deleteContent() {
-                Log.i("icv_delete", icv.getTextContent());
+                Log.i("icv_delete", icv.getInputContent());
+            }
+        });
+
+
+        codeView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                codeView.setEtNumber(5);
+            }
+        }, 5000);
+
+
+
+        codeView.setInputCompleteListener(new VerificationCodeView.InputCompleteListener() {
+            @Override
+            public void inputComplete() {
+                Log.i("icv_input", codeView.getInputContent());
+            }
+
+            @Override
+            public void deleteContent() {
+                Log.i("icv_delete", codeView.getInputContent());
             }
         });
 
@@ -44,6 +65,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-        icv.clearAllText();
+        icv.clearInputContent();
     }
 }

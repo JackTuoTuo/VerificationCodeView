@@ -48,6 +48,8 @@ public class VerificationCodeView extends RelativeLayout {
     //存储TextView的数据 数量由自定义控件的属性传入
     private TextView[] mTextViews;
 
+    private MyTextWatcher myTextWatcher = new MyTextWatcher();
+
 
     public VerificationCodeView(Context context) {
         this(context, null);
@@ -92,6 +94,15 @@ public class VerificationCodeView extends RelativeLayout {
         if (mEtBackgroundDrawableNormal == null) {
             mEtBackgroundDrawableNormal = context.getResources().getDrawable(R.drawable.shape_icv_et_bg_normal);
         }
+
+        initUI();
+    }
+
+    // 初始UI
+    private void initUI() {
+        initTextViews(getContext(), mEtNumber, mEtWidth, mEtDividerDrawable, mEtTextSize, mEtTextColor);
+        initEtContainer(mTextViews);
+        setListener();
     }
 
 
@@ -106,14 +117,6 @@ public class VerificationCodeView extends RelativeLayout {
         }
 
         super.onMeasure(widthMeasureSpec, mHeightMeasureSpec);
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        initTextViews(getContext(), mEtNumber, mEtWidth, mEtDividerDrawable, mEtTextSize, mEtTextColor);
-        initEtContainer(mTextViews);
-        setListener();
     }
 
 
@@ -157,26 +160,7 @@ public class VerificationCodeView extends RelativeLayout {
 
     private void setListener() {
         // 监听输入内容
-        et.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String inputStr = editable.toString();
-                if (inputStr != null && !inputStr.equals("")) {
-                    setText(inputStr);
-                    et.setText("");
-                }
-            }
-        });
+        et.addTextChangedListener(myTextWatcher);
 
         // 监听删除按键
         et.setOnKeyListener(new OnKeyListener() {
@@ -193,7 +177,7 @@ public class VerificationCodeView extends RelativeLayout {
 
 
     // 给TextView 设置文字
-    public void setText(String inputContent) {
+    private void setText(String inputContent) {
         for (int i = 0; i < mTextViews.length; i++) {
             TextView tv = mTextViews[i];
             if (tv.getText().toString().trim().equals("")) {
@@ -212,7 +196,7 @@ public class VerificationCodeView extends RelativeLayout {
     }
 
     // 监听删除
-    public void onKeyDelete() {
+    private void onKeyDelete() {
         for (int i = mTextViews.length - 1; i >= 0; i--) {
             TextView tv = mTextViews[i];
             if (!tv.getText().toString().trim().equals("")) {
@@ -236,7 +220,7 @@ public class VerificationCodeView extends RelativeLayout {
      *
      * @return string
      */
-    public String getTextContent() {
+    public String getInputContent() {
         StringBuffer buffer = new StringBuffer();
         for (TextView tv : mTextViews) {
             buffer.append(tv.getText().toString().trim());
@@ -245,9 +229,9 @@ public class VerificationCodeView extends RelativeLayout {
     }
 
     /**
-     * 删除所有内容
+     * 删除输入内容
      */
-    public void clearAllText() {
+    public void clearInputContent() {
         for (int i = 0; i < mTextViews.length; i++) {
             if (i == 0) {
                 mTextViews[i].setBackgroundDrawable(mEtBackgroundDrawableFocus);
@@ -258,13 +242,24 @@ public class VerificationCodeView extends RelativeLayout {
         }
     }
 
+    /**
+     * 设置输入框个数
+     * @param etNumber
+     */
+    public void setEtNumber(int etNumber) {
+        this.mEtNumber = etNumber;
+        et.removeTextChangedListener(myTextWatcher);
+        containerEt.removeAllViews();
+        initUI();
+    }
+
 
     /**
      * 获取输入的位数
      *
      * @return int
      */
-    public int getTextCount() {
+    public int getEtNumber() {
         return mEtNumber;
     }
 
@@ -290,6 +285,28 @@ public class VerificationCodeView extends RelativeLayout {
     public float sp2px(float spValue, Context context) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
                 spValue, context.getResources().getDisplayMetrics());
+    }
+
+    private class MyTextWatcher implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String inputStr = editable.toString();
+            if (inputStr != null && !inputStr.equals("")) {
+                setText(inputStr);
+                et.setText("");
+            }
+        }
     }
 
 
