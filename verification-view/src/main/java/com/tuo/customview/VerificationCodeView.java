@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -72,11 +73,39 @@ public class VerificationCodeView extends RelativeLayout {
         mEtWidth = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_width, 42);
         mEtDividerDrawable = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_divider_drawable);
         mEtTextSize = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_text_size, 16);
-        mEtTextColor = typedArray.getColor(R.styleable.VerificationCodeView_icv_et_text_color, Color.WHITE);
+        mEtTextColor = typedArray.getColor(R.styleable.VerificationCodeView_icv_et_text_color, Color.BLACK);
         mEtBackgroundDrawableFocus = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_bg_focus);
         mEtBackgroundDrawableNormal = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_bg_normal);
         //释放资源
         typedArray.recycle();
+
+
+        // 当xml中未配置时 这里进行初始配置默认图片
+        if (mEtDividerDrawable == null) {
+            mEtDividerDrawable = context.getResources().getDrawable(R.drawable.shape_divider_identifying);
+        }
+
+        if (mEtBackgroundDrawableFocus == null) {
+            mEtBackgroundDrawableFocus = context.getResources().getDrawable(R.drawable.shape_icv_et_bg_focus);
+        }
+
+        if (mEtBackgroundDrawableNormal == null) {
+            mEtBackgroundDrawableNormal = context.getResources().getDrawable(R.drawable.shape_icv_et_bg_normal);
+        }
+    }
+
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        // 设置当 高为 warpContent 模式时的默认值 为 50dp
+        int mHeightMeasureSpec = heightMeasureSpec;
+
+        int heightMode = MeasureSpec.getMode(mHeightMeasureSpec);
+        if (heightMode == MeasureSpec.AT_MOST) {
+            mHeightMeasureSpec = MeasureSpec.makeMeasureSpec((int) dp2px(50, getContext()), MeasureSpec.EXACTLY);
+        }
+
+        super.onMeasure(widthMeasureSpec, mHeightMeasureSpec);
     }
 
     @Override
@@ -250,6 +279,17 @@ public class VerificationCodeView extends RelativeLayout {
         void inputComplete();
 
         void deleteContent();
+    }
+
+
+    public float dp2px(float dpValue, Context context) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                dpValue, context.getResources().getDisplayMetrics());
+    }
+
+    public float sp2px(float spValue, Context context) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                spValue, context.getResources().getDisplayMetrics());
     }
 
 
