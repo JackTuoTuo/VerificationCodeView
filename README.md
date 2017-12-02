@@ -95,7 +95,7 @@ codeView.setEtNumber(number);
 --------
 #### version 1.0.1
 - 支持Java代码中动态设置输入框个数
-- 支持xml中最只配置宽高，输入框个数默认为1
+- 支持xml中只配置宽高，输入框个数默认为1
 
 
 
