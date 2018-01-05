@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -26,6 +27,11 @@ import android.widget.TextView;
  */
 
 public class VerificationCodeView extends RelativeLayout {
+
+    private static final int DEF_ET_NUM = 1;
+    private static final int DEF_ET_WIDTH = 42;
+    private static final int DEF_ET_TEXT_SIZE = 16;
+    private static final int DEF_ET_TEXT_COLOR = Color.BLACK;
 
     private LinearLayout containerEt;
 
@@ -61,21 +67,21 @@ public class VerificationCodeView extends RelativeLayout {
 
     public VerificationCodeView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context, attrs, defStyleAttr);
+        init(context, attrs);
     }
 
     //初始化 布局和属性
-    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
+    private void init(Context context, AttributeSet attrs) {
         LayoutInflater.from(context).inflate(R.layout.layout_identifying_code, this);
-        containerEt = (LinearLayout) this.findViewById(R.id.container_et);
-        et = (EditText) this.findViewById(R.id.et);
+        containerEt = findViewById(R.id.container_et);
+        et = findViewById(R.id.et);
 
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VerificationCodeView, defStyleAttr, 0);
-        mEtNumber = typedArray.getInteger(R.styleable.VerificationCodeView_icv_et_number, 1);
-        mEtWidth = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_width, 42);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VerificationCodeView);
+        mEtNumber = typedArray.getInteger(R.styleable.VerificationCodeView_icv_et_number, DEF_ET_NUM);
+        mEtWidth = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_width, DEF_ET_WIDTH);
         mEtDividerDrawable = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_divider_drawable);
-        mEtTextSize = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_text_size, 16);
-        mEtTextColor = typedArray.getColor(R.styleable.VerificationCodeView_icv_et_text_color, Color.BLACK);
+        mEtTextSize = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_text_size, DEF_ET_TEXT_SIZE);
+        mEtTextColor = typedArray.getColor(R.styleable.VerificationCodeView_icv_et_text_color, DEF_ET_TEXT_COLOR);
         mEtBackgroundDrawableFocus = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_bg_focus);
         mEtBackgroundDrawableNormal = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_bg_normal);
         //释放资源
@@ -133,7 +139,7 @@ public class VerificationCodeView extends RelativeLayout {
         mTextViews = new TextView[etNumber];
         for (int i = 0; i < mTextViews.length; i++) {
             TextView textView = new TextView(context);
-            textView.setTextSize(etTextSize);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, etTextSize);
             textView.setTextColor(etTextColor);
             textView.setWidth(etWidth);
             textView.setHeight(etWidth);
@@ -152,8 +158,8 @@ public class VerificationCodeView extends RelativeLayout {
 
     //初始化存储TextView 的容器
     private void initEtContainer(TextView[] mTextViews) {
-        for (int i = 0; i < mTextViews.length; i++) {
-            containerEt.addView(mTextViews[i]);
+        for (TextView mTextView : mTextViews) {
+            containerEt.addView(mTextView);
         }
     }
 
@@ -221,7 +227,7 @@ public class VerificationCodeView extends RelativeLayout {
      * @return string
      */
     public String getInputContent() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (TextView tv : mTextViews) {
             buffer.append(tv.getText().toString().trim());
         }
@@ -244,13 +250,20 @@ public class VerificationCodeView extends RelativeLayout {
 
     /**
      * 设置输入框个数
-     * @param etNumber
      */
     public void setEtNumber(int etNumber) {
         this.mEtNumber = etNumber;
         et.removeTextChangedListener(myTextWatcher);
         containerEt.removeAllViews();
         initUI();
+    }
+
+    /**
+     * 获取内部的EditText。
+     * 原因：控制键盘的显示和隐藏，在Fragment中，键盘是不会自动弹出的。
+     */
+    public EditText getEditText() {
+        return et;
     }
 
 
@@ -277,14 +290,9 @@ public class VerificationCodeView extends RelativeLayout {
     }
 
 
-    public float dp2px(float dpValue, Context context) {
+    private float dp2px(float dpValue, Context context) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 dpValue, context.getResources().getDisplayMetrics());
-    }
-
-    public float sp2px(float spValue, Context context) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
-                spValue, context.getResources().getDisplayMetrics());
     }
 
     private class MyTextWatcher implements TextWatcher {
@@ -302,7 +310,7 @@ public class VerificationCodeView extends RelativeLayout {
         @Override
         public void afterTextChanged(Editable editable) {
             String inputStr = editable.toString();
-            if (inputStr != null && !inputStr.equals("")) {
+            if (!TextUtils.isEmpty(inputStr)) {
                 setText(inputStr);
                 et.setText("");
             }

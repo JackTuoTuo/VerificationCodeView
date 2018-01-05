@@ -9,7 +9,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'com.android.tools.build:gradle:3.0.1'
 
         // 上传 jcenter 需要的插件
         classpath 'com.novoda:bintray-release:0.7.0'
