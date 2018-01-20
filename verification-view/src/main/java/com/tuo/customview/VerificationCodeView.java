@@ -74,7 +74,7 @@ public class VerificationCodeView extends RelativeLayout {
         mEtNumber = typedArray.getInteger(R.styleable.VerificationCodeView_icv_et_number, 1);
         mEtWidth = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_width, 42);
         mEtDividerDrawable = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_divider_drawable);
-        mEtTextSize = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_text_size, 16);
+        mEtTextSize = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_text_size, (int) sp2px(16, context));
         mEtTextColor = typedArray.getColor(R.styleable.VerificationCodeView_icv_et_text_color, Color.BLACK);
         mEtBackgroundDrawableFocus = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_bg_focus);
         mEtBackgroundDrawableNormal = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_bg_normal);
@@ -133,7 +133,7 @@ public class VerificationCodeView extends RelativeLayout {
         mTextViews = new TextView[etNumber];
         for (int i = 0; i < mTextViews.length; i++) {
             TextView textView = new TextView(context);
-            textView.setTextSize(etTextSize);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, etTextSize);
             textView.setTextColor(etTextColor);
             textView.setWidth(etWidth);
             textView.setHeight(etWidth);
@@ -244,6 +244,7 @@ public class VerificationCodeView extends RelativeLayout {
 
     /**
      * 设置输入框个数
+     *
      * @param etNumber
      */
     public void setEtNumber(int etNumber) {
