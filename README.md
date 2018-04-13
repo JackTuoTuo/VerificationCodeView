@@ -91,6 +91,8 @@ implementation 'com.jacktuotuo.customview:verificationcodeview:1.0.2'
         app:icv_et_bg_normal="@drawable/shape_icv_et_bg_normal"
         app:icv_et_divider_drawable="@drawable/shape_divider_identifying"
         app:icv_et_number="6"
+        app:icv_et_pwd="true"
+        app:icv_et_pwd_radius="10dp"
         app:icv_et_text_color="#000000"
         app:icv_et_width="50dp" />
 ```
