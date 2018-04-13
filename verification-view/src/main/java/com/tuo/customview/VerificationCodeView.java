@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -42,11 +43,15 @@ public class VerificationCodeView extends RelativeLayout {
     private float mEtTextSize;
     //输入框获取焦点时背景
     private Drawable mEtBackgroundDrawableFocus;
-    // 输入框没有焦点时背景
+    //输入框没有焦点时背景
     private Drawable mEtBackgroundDrawableNormal;
+    //是否是密码模式
+    private boolean mEtPwd;
+    //密码模式时圆的半径
+    private float mEtPwdRadius;
 
     //存储TextView的数据 数量由自定义控件的属性传入
-    private TextView[] mTextViews;
+    private PwdTextView[] mPwdTextViews;
 
     private MyTextWatcher myTextWatcher = new MyTextWatcher();
 
@@ -78,6 +83,8 @@ public class VerificationCodeView extends RelativeLayout {
         mEtTextColor = typedArray.getColor(R.styleable.VerificationCodeView_icv_et_text_color, Color.BLACK);
         mEtBackgroundDrawableFocus = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_bg_focus);
         mEtBackgroundDrawableNormal = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_bg_normal);
+        mEtPwd = typedArray.getBoolean(R.styleable.VerificationCodeView_icv_et_pwd, false);
+        mEtPwdRadius = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_pwd_radius, 0);
         //释放资源
         typedArray.recycle();
 
@@ -101,7 +108,7 @@ public class VerificationCodeView extends RelativeLayout {
     // 初始UI
     private void initUI() {
         initTextViews(getContext(), mEtNumber, mEtWidth, mEtDividerDrawable, mEtTextSize, mEtTextColor);
-        initEtContainer(mTextViews);
+        initEtContainer(mPwdTextViews);
         setListener();
     }
 
@@ -130,9 +137,10 @@ public class VerificationCodeView extends RelativeLayout {
             etDividerDrawable.setBounds(0, 0, etDividerDrawable.getMinimumWidth(), etDividerDrawable.getMinimumHeight());
             containerEt.setDividerDrawable(etDividerDrawable);
         }
-        mTextViews = new TextView[etNumber];
-        for (int i = 0; i < mTextViews.length; i++) {
-            TextView textView = new TextView(context);
+        mPwdTextViews = new PwdTextView[etNumber];
+
+        for (int i = 0; i < mPwdTextViews.length; i++) {
+            PwdTextView textView = new PwdTextView(context);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, etTextSize);
             textView.setTextColor(etTextColor);
             textView.setWidth(etWidth);
@@ -146,14 +154,14 @@ public class VerificationCodeView extends RelativeLayout {
 
             textView.setFocusable(false);
 
-            mTextViews[i] = textView;
+            mPwdTextViews[i] = textView;
         }
     }
 
     //初始化存储TextView 的容器
     private void initEtContainer(TextView[] mTextViews) {
-        for (int i = 0; i < mTextViews.length; i++) {
-            containerEt.addView(mTextViews[i]);
+        for (TextView mTextView : mTextViews) {
+            containerEt.addView(mTextView);
         }
     }
 
@@ -178,9 +186,13 @@ public class VerificationCodeView extends RelativeLayout {
 
     // 给TextView 设置文字
     private void setText(String inputContent) {
-        for (int i = 0; i < mTextViews.length; i++) {
-            TextView tv = mTextViews[i];
+
+        for (int i = 0; i < mPwdTextViews.length; i++) {
+            PwdTextView tv = mPwdTextViews[i];
             if (tv.getText().toString().trim().equals("")) {
+                if (mEtPwd) {
+                    tv.drawPwd(mEtPwdRadius);
+                }
                 tv.setText(inputContent);
                 // 添加输入完成的监听
                 if (inputCompleteListener != null) {
@@ -188,7 +200,7 @@ public class VerificationCodeView extends RelativeLayout {
                 }
                 tv.setBackgroundDrawable(mEtBackgroundDrawableNormal);
                 if (i < mEtNumber - 1) {
-                    mTextViews[i + 1].setBackgroundDrawable(mEtBackgroundDrawableFocus);
+                    mPwdTextViews[i + 1].setBackgroundDrawable(mEtBackgroundDrawableFocus);
                 }
                 break;
             }
@@ -197,9 +209,12 @@ public class VerificationCodeView extends RelativeLayout {
 
     // 监听删除
     private void onKeyDelete() {
-        for (int i = mTextViews.length - 1; i >= 0; i--) {
-            TextView tv = mTextViews[i];
+        for (int i = mPwdTextViews.length - 1; i >= 0; i--) {
+            PwdTextView tv = mPwdTextViews[i];
             if (!tv.getText().toString().trim().equals("")) {
+                if (mEtPwd) {
+                    tv.clearPwd();
+                }
                 tv.setText("");
                 // 添加删除完成监听
                 if (inputCompleteListener != null) {
@@ -207,7 +222,7 @@ public class VerificationCodeView extends RelativeLayout {
                 }
                 tv.setBackgroundDrawable(mEtBackgroundDrawableFocus);
                 if (i < mEtNumber - 1) {
-                    mTextViews[i + 1].setBackgroundDrawable(mEtBackgroundDrawableNormal);
+                    mPwdTextViews[i + 1].setBackgroundDrawable(mEtBackgroundDrawableNormal);
                 }
                 break;
             }
@@ -222,7 +237,7 @@ public class VerificationCodeView extends RelativeLayout {
      */
     public String getInputContent() {
         StringBuffer buffer = new StringBuffer();
-        for (TextView tv : mTextViews) {
+        for (TextView tv : mPwdTextViews) {
             buffer.append(tv.getText().toString().trim());
         }
         return buffer.toString();
@@ -232,13 +247,16 @@ public class VerificationCodeView extends RelativeLayout {
      * 删除输入内容
      */
     public void clearInputContent() {
-        for (int i = 0; i < mTextViews.length; i++) {
+        for (int i = 0; i < mPwdTextViews.length; i++) {
             if (i == 0) {
-                mTextViews[i].setBackgroundDrawable(mEtBackgroundDrawableFocus);
+                mPwdTextViews[i].setBackgroundDrawable(mEtBackgroundDrawableFocus);
             } else {
-                mTextViews[i].setBackgroundDrawable(mEtBackgroundDrawableNormal);
+                mPwdTextViews[i].setBackgroundDrawable(mEtBackgroundDrawableNormal);
             }
-            mTextViews[i].setText("");
+            if (mEtPwd) {
+                mPwdTextViews[i].clearPwd();
+            }
+            mPwdTextViews[i].setText("");
         }
     }
 
@@ -264,12 +282,33 @@ public class VerificationCodeView extends RelativeLayout {
         return mEtNumber;
     }
 
+
+    /**
+     * 设置是否是密码模式 默认不是
+     *
+     * @param isPwdMode
+     */
+    public void setPwdMode(boolean isPwdMode) {
+        this.mEtPwd = isPwdMode;
+    }
+
+
+    /**
+     * 获取输入的EditText 用于外界设置键盘弹出
+     *
+     * @return
+     */
+    public EditText getEditText() {
+        return et;
+    }
+
     // 输入完成 和 删除成功 的监听
     private InputCompleteListener inputCompleteListener;
 
     public void setInputCompleteListener(InputCompleteListener inputCompleteListener) {
         this.inputCompleteListener = inputCompleteListener;
     }
+
 
     public interface InputCompleteListener {
         void inputComplete();
@@ -288,6 +327,7 @@ public class VerificationCodeView extends RelativeLayout {
                 spValue, context.getResources().getDisplayMetrics());
     }
 
+
     private class MyTextWatcher implements TextWatcher {
 
         @Override
@@ -303,7 +343,7 @@ public class VerificationCodeView extends RelativeLayout {
         @Override
         public void afterTextChanged(Editable editable) {
             String inputStr = editable.toString();
-            if (inputStr != null && !inputStr.equals("")) {
+            if (!TextUtils.isEmpty(inputStr)) {
                 setText(inputStr);
                 et.setText("");
             }
