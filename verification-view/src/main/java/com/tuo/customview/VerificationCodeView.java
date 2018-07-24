@@ -183,7 +183,7 @@ public class VerificationCodeView extends RelativeLayout {
         });
 
         //监听回退键
-        et.setBackSpaceLisetener(new TInputConnection.BackspaceListener() {
+        et.setBackSpaceListener(new TInputConnection.BackspaceListener() {
             @Override
             public boolean onBackspace() {
                 onKeyDelete();
@@ -354,8 +354,18 @@ public class VerificationCodeView extends RelativeLayout {
         public void afterTextChanged(Editable editable) {
             String inputStr = editable.toString();
             if (!TextUtils.isEmpty(inputStr)) {
-                setText(inputStr);
-                et.setText("");
+
+                String[] strArray = inputStr.split("");
+
+                for (int i = 0; i < strArray.length; i++) {
+
+                    // 不能大于输入框个数
+                    if (i > mEtNumber) {
+                        break;
+                    }
+                    setText(strArray[i]);
+                    et.setText("");
+                }
             }
         }
     }

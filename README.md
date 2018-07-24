@@ -107,13 +107,15 @@ codeVidw.setPwdMode(true/false)
 ### Update Log
 
 #### version 1.0.1
-- 支持Java代码中动态设置输入框个数
-- 支持xml中只配置宽高，输入框个数默认为1
+ - 支持Java代码中动态设置输入框个数
+ - 支持xml中只配置宽高，输入框个数默认为1
 #### version 1.0.2
-- 修复设置字体大小的bug
+ - 修复设置字体大小的bug
 #### version 1.0.3
-- 支持密码模式
-
+ - 支持密码模式
+#### version 1.0.4
+ - 解决个别系统使用自动复制粘贴验证码时出现的bug
+ - 解决Google和华为键盘删除键无效的bug
 ---------
 ### TODO
 
@@ -123,7 +125,9 @@ codeVidw.setPwdMode(true/false)
  - 修改字体大小Bug
 #### version-1.0.3
  - 支持密码模式
-
+#### version-1.0.4
+ - 解决个别系统使用自动复制粘贴验证码时出现的bug
+ - 解决Google和华为键盘删除键无效的bug
 ---------
 ### License
 

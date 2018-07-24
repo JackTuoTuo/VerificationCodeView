@@ -44,7 +44,7 @@ public class PwdEditText extends android.support.v7.widget.AppCompatEditText {
         return inputConnection;
     }
 
-    public void setBackSpaceLisetener(TInputConnection.BackspaceListener backSpaceLisetener){
+    public void setBackSpaceListener(TInputConnection.BackspaceListener backSpaceLisetener){
         inputConnection.setBackspaceListener(backSpaceLisetener);
     }
 }
