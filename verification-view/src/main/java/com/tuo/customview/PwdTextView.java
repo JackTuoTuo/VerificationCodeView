@@ -8,7 +8,7 @@ import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
 /**
- * @describe TODO
+ *
  * 作者：Tuo on 2018/4/13 16:35
  * 邮箱：839539179@qq.com
  */

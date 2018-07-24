@@ -306,7 +306,7 @@ public class VerificationCodeView extends RelativeLayout {
     /**
      * 获取输入的EditText 用于外界设置键盘弹出
      *
-     * @return
+     * @return EditText
      */
     public EditText getEditText() {
         return et;
