@@ -14,7 +14,7 @@
 
     </LinearLayout>
 
-    <EditText
+    <com.tuo.customview.PwdEditText
         android:id="@+id/et"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

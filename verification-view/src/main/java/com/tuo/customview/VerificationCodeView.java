@@ -30,7 +30,7 @@ public class VerificationCodeView extends RelativeLayout {
 
     private LinearLayout containerEt;
 
-    private EditText et;
+    private PwdEditText et;
     // 输入框数量
     private int mEtNumber;
     // 输入框的宽度
@@ -73,7 +73,7 @@ public class VerificationCodeView extends RelativeLayout {
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         LayoutInflater.from(context).inflate(R.layout.layout_identifying_code, this);
         containerEt = (LinearLayout) this.findViewById(R.id.container_et);
-        et = (EditText) this.findViewById(R.id.et);
+        et = (PwdEditText) this.findViewById(R.id.et);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VerificationCodeView, defStyleAttr, 0);
         mEtNumber = typedArray.getInteger(R.styleable.VerificationCodeView_icv_et_number, 1);
@@ -181,6 +181,16 @@ public class VerificationCodeView extends RelativeLayout {
                 return false;
             }
         });
+
+        //监听回退键
+        et.setBackSpaceLisetener(new TInputConnection.BackspaceListener() {
+            @Override
+            public boolean onBackspace() {
+                onKeyDelete();
+                return false;
+            }
+        });
+
     }
 
 
