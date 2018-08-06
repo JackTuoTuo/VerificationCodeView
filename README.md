@@ -116,6 +116,8 @@ codeVidw.setPwdMode(true/false)
 #### version 1.0.4
  - 解决个别系统使用自动复制粘贴验证码时出现的bug
  - 解决Google和华为键盘删除键无效的bug
+#### version 1.0.5
+ - 解决一次删除两个数字的bug,模拟器使用时，请使用Backspace代替回退键
 ---------
 ### TODO
 
@@ -128,6 +130,8 @@ codeVidw.setPwdMode(true/false)
 #### version-1.0.4
  - 解决个别系统使用自动复制粘贴验证码时出现的bug
  - 解决Google和华为键盘删除键无效的bug
+#### version 1.0.5
+ - 解决一次删除两个数字的bug
 ---------
 ### License
 
