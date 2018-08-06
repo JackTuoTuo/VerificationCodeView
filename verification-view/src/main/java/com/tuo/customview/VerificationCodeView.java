@@ -181,16 +181,6 @@ public class VerificationCodeView extends RelativeLayout {
                 return false;
             }
         });
-
-        //监听回退键
-        et.setBackSpaceListener(new TInputConnection.BackspaceListener() {
-            @Override
-            public boolean onBackspace() {
-                onKeyDelete();
-                return false;
-            }
-        });
-
     }
 
 
