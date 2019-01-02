@@ -8,11 +8,11 @@
 
 VerificationCodeView  —正方形验证码输入框
 
-
 ---------
 
 ### 示例:
 
+![动图演示](https://github.com/JackTuoTuo/VerificationCodeView/blob/master/GIF3.gif)
 ![动图演示](https://github.com/JackTuoTuo/VerificationCodeView/blob/master/GIF.gif)
 ![动图演示](https://github.com/JackTuoTuo/VerificationCodeView/blob/master/GIF2.gif)
 
@@ -32,7 +32,10 @@ apk演示：[点击下载](https://github.com/JackTuoTuo/VerificationCodeView/bl
 |icv_et_bg_focus|输入框获取焦点时边框|reference|``` ```|
 |icv_et_bg_normal|输入框没有焦点时边框|reference|``` ```|
 |icv_et_pwd|是否是密码模式|boolean|```false```|
-|icv_et_pwd_radius|密码模式时圆的半径|dimension|reference|```默认半径为四分之一的输入框宽度```|
+|icv_et_pwd_radius(废除)|密码模式时圆的半径|dimension|reference|
+|icv_et_pwd_mode|密码模式时显现出得字符形式|integer|`1`|
+|icv_et_toggle_icon_close|明文密文按钮关闭时背景图|reference|`null`|
+|icv_et_toggle_icon_open|明文密文按钮打开时背景图|reference|`null`|
 
 
 
@@ -46,7 +49,6 @@ apk演示：[点击下载](https://github.com/JackTuoTuo/VerificationCodeView/bl
 |getEditText|获取EditText提供给外界设置键盘弹出|EditText|
 |setPwdMode|动态设置是否是密码模式|void|
 |setInputCompleteListener(InputCompleteListener listener) |设置输入和删除时的监听|Void|
-
 
 
 
@@ -79,25 +81,37 @@ implementation 'com.jacktuotuo.customview:verificationcodeview:1.0.4'
 ```
 - 个性化配置
 ``` xml
-<com.tuo.customview.VerificationCodeView
+    <com.tuo.customview.VerificationCodeView
         android:id="@+id/icv"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="26dp"
+        android:layout_marginRight="10dp"
         app:icv_et_bg_focus="@drawable/shape_icv_et_bg_focus"
         app:icv_et_bg_normal="@drawable/shape_icv_et_bg_normal"
         app:icv_et_divider_drawable="@drawable/shape_divider_identifying"
         app:icv_et_number="6"
         app:icv_et_pwd="true"
-        app:icv_et_pwd_radius="10dp"
+        app:icv_et_pwd_mode="2"
         app:icv_et_text_color="#000000"
-        app:icv_et_width="50dp" />
+        app:icv_et_toggle_icon_close="@mipmap/hide_pass"
+        app:icv_et_toggle_icon_open="@mipmap/watch_pass"
+        app:icv_et_width="40dp" />
 ```
 
+- icv_et_pwd_mode不同属性值对应不同的密文表现形式。
+  - 1：*
+  - 2：●
+  - 3：♥
+  - 4：▉
+  - 5：☻
+  - 6：◆
+  - 7：•
+
 #### 3 java代码中使用
+
 ``` xml
 VerificationCodeView codeView = new VerificationCodeView(context);
 codeView.setEtNumber(number);
@@ -118,6 +132,11 @@ codeVidw.setPwdMode(true/false)
  - 解决Google和华为键盘删除键无效的bug
 #### version 1.0.5
  - 解决一次删除两个数字的bug,模拟器使用时，请使用Backspace代替回退键
+#### version 1.0.6
+
+- 增加按钮使密文明文可以动态切换
+- 增加密文状态下，密文展示的多种形态。
+
 ---------
 ### TODO
 
@@ -130,8 +149,13 @@ codeVidw.setPwdMode(true/false)
 #### version-1.0.4
  - 解决个别系统使用自动复制粘贴验证码时出现的bug
  - 解决Google和华为键盘删除键无效的bug
-#### version 1.0.5
+#### version-1.0.5
  - 解决一次删除两个数字的bug
+#### version-1.0.6
+
+- 增加按钮使密文明文可以动态切换
+- 增加密文状态下，密文展示的多种形态。
+
 ---------
 ### License
 

@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.SingleLineTransformationMethod;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -48,12 +51,21 @@ public class VerificationCodeView extends RelativeLayout {
     //是否是密码模式
     private boolean mEtPwd;
     //密码模式时圆的半径
-    private float mEtPwdRadius;
-
+//    private float mEtPwdRadius;
+    //输入框查看明文密文按钮打开时候的图标
+    private Drawable mEtToggleIconOpen;
+    //输入框查看明文密文按钮关闭时候的图标
+    private Drawable mEtToggleIconClose;
     //存储TextView的数据 数量由自定义控件的属性传入
-    private PwdTextView[] mPwdTextViews;
+    private TextView[] mTextViews;
+
+    // 密码模式
+    private int mEtPwdMode;
 
     private MyTextWatcher myTextWatcher = new MyTextWatcher();
+
+    //明文属性转为密文属性 handler
+    private Handler mRefreshHandler = new Handler(Looper.getMainLooper());
 
 
     public VerificationCodeView(Context context) {
@@ -84,7 +96,12 @@ public class VerificationCodeView extends RelativeLayout {
         mEtBackgroundDrawableFocus = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_bg_focus);
         mEtBackgroundDrawableNormal = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_bg_normal);
         mEtPwd = typedArray.getBoolean(R.styleable.VerificationCodeView_icv_et_pwd, false);
-        mEtPwdRadius = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_pwd_radius, 0);
+        mEtToggleIconOpen = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_toggle_icon_open);
+        mEtToggleIconClose = typedArray.getDrawable(R.styleable.VerificationCodeView_icv_et_toggle_icon_close);
+//        mEtPwdRadius = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeView_icv_et_pwd_radius, 0);
+
+        mEtPwdMode = typedArray.getInteger(R.styleable.VerificationCodeView_icv_et_pwd_mode, 1);
+
         //释放资源
         typedArray.recycle();
 
@@ -108,7 +125,7 @@ public class VerificationCodeView extends RelativeLayout {
     // 初始UI
     private void initUI() {
         initTextViews(getContext(), mEtNumber, mEtWidth, mEtDividerDrawable, mEtTextSize, mEtTextColor);
-        initEtContainer(mPwdTextViews);
+        initEtContainer(mTextViews);
         setListener();
     }
 
@@ -117,12 +134,10 @@ public class VerificationCodeView extends RelativeLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // 设置当 高为 warpContent 模式时的默认值 为 50dp
         int mHeightMeasureSpec = heightMeasureSpec;
-
         int heightMode = MeasureSpec.getMode(mHeightMeasureSpec);
         if (heightMode == MeasureSpec.AT_MOST) {
             mHeightMeasureSpec = MeasureSpec.makeMeasureSpec((int) dp2px(50, getContext()), MeasureSpec.EXACTLY);
         }
-
         super.onMeasure(widthMeasureSpec, mHeightMeasureSpec);
     }
 
@@ -137,10 +152,9 @@ public class VerificationCodeView extends RelativeLayout {
             etDividerDrawable.setBounds(0, 0, etDividerDrawable.getMinimumWidth(), etDividerDrawable.getMinimumHeight());
             containerEt.setDividerDrawable(etDividerDrawable);
         }
-        mPwdTextViews = new PwdTextView[etNumber];
-
-        for (int i = 0; i < mPwdTextViews.length; i++) {
-            PwdTextView textView = new PwdTextView(context);
+        mTextViews = new TextView[etNumber]; //创建一个储存输入的数据 TextView 控件数组
+        for (int i = 0; i < mTextViews.length; i++) {
+            TextView textView = new TextView(context);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, etTextSize);
             textView.setTextColor(etTextColor);
             textView.setWidth(etWidth);
@@ -151,10 +165,12 @@ public class VerificationCodeView extends RelativeLayout {
                 textView.setBackgroundDrawable(mEtBackgroundDrawableNormal);
             }
             textView.setGravity(Gravity.CENTER);
-
             textView.setFocusable(false);
-
-            mPwdTextViews[i] = textView;
+            mTextViews[i] = textView;
+            if (mEtToggleIconOpen != null && mEtToggleIconClose != null) {
+                this.findViewById(R.id.btn_watch_paw).setVisibility(VISIBLE);
+                this.findViewById(R.id.btn_watch_paw).setBackgroundDrawable(mEtToggleIconClose);
+            }
         }
     }
 
@@ -181,40 +197,104 @@ public class VerificationCodeView extends RelativeLayout {
                 return false;
             }
         });
+
+        this.findViewById(R.id.btn_watch_paw).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mEtToggleIconOpen != null && mEtToggleIconClose != null) {
+                    if (!mEtPwd) {
+                        //当VerificationCodeView 中最后一个TextView也写入了数据，明文和密码切换按钮才生效
+                        if (!TextUtils.isEmpty(mTextViews[mEtNumber - 1].getText().toString().trim())) {
+                            showCiphertext();
+                            mEtPwd = true;
+                        }
+                    } else {
+                        if (!TextUtils.isEmpty(mTextViews[mEtNumber - 1].getText().toString().trim())) {
+                            showPlaintext();
+                            mEtPwd = false;
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * 明文显示VerificationCodeView 中的内容
+     */
+    private void showPlaintext() {
+        for (int i = 0; i < mTextViews.length; i++) {
+            final TextView tv = mTextViews[i];
+            mRefreshHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    tv.setTransformationMethod(SingleLineTransformationMethod.getInstance());
+                }
+            }, 0);
+        }
+    }
+
+    /**
+     * 密文显示VerificationCodeView中的内容
+     */
+    private void showCiphertext() {
+        for (int i = 0; i < mTextViews.length; i++) {
+            final TextView tv = mTextViews[i];
+            mRefreshHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    tv.setTransformationMethod(new CustomPasswordTransformationMethod(mEtPwdMode));
+                }
+            }, 0);
+        }
     }
 
 
     // 给TextView 设置文字
     private void setText(String inputContent) {
-
-        for (int i = 0; i < mPwdTextViews.length; i++) {
-            PwdTextView tv = mPwdTextViews[i];
+        for (int i = 0; i < mTextViews.length; i++) {
+            final TextView tv = mTextViews[i];
             if (tv.getText().toString().trim().equals("")) {
-                if (mEtPwd) {
-                    tv.drawPwd(mEtPwdRadius);
-                }
                 tv.setText(inputContent);
+                if (mEtPwd) {
+                    mRefreshHandler.postDelayed(new Runnable() {// 将改变TextView属性为展示密文的属性，我改动的
+                        @Override
+                        public void run() {
+                            tv.setTransformationMethod(new CustomPasswordTransformationMethod(mEtPwdMode));
+                        }
+                    }, 200);
+                } else {
+                    mRefreshHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            tv.setTransformationMethod(SingleLineTransformationMethod.getInstance());
+                        }
+                    }, 0);
+                }
                 // 添加输入完成的监听
                 if (inputCompleteListener != null) {
                     inputCompleteListener.inputComplete();
                 }
                 tv.setBackgroundDrawable(mEtBackgroundDrawableNormal);
                 if (i < mEtNumber - 1) {
-                    mPwdTextViews[i + 1].setBackgroundDrawable(mEtBackgroundDrawableFocus);
+                    mTextViews[i + 1].setBackgroundDrawable(mEtBackgroundDrawableFocus);
                 }
                 break;
+            }
+        }
+        if (!TextUtils.isEmpty(mTextViews[mEtNumber - 1].getText().toString())) {
+            if (mEtToggleIconOpen != null && mEtToggleIconClose != null) {
+                this.findViewById(R.id.btn_watch_paw).setVisibility(VISIBLE);
+                this.findViewById(R.id.btn_watch_paw).setBackgroundDrawable(mEtToggleIconOpen);
             }
         }
     }
 
     // 监听删除
     private void onKeyDelete() {
-        for (int i = mPwdTextViews.length - 1; i >= 0; i--) {
-            PwdTextView tv = mPwdTextViews[i];
+        for (int i = mTextViews.length - 1; i >= 0; i--) {
+            TextView tv = mTextViews[i];
             if (!tv.getText().toString().trim().equals("")) {
-                if (mEtPwd) {
-                    tv.clearPwd();
-                }
                 tv.setText("");
                 // 添加删除完成监听
                 if (inputCompleteListener != null) {
@@ -222,9 +302,15 @@ public class VerificationCodeView extends RelativeLayout {
                 }
                 tv.setBackgroundDrawable(mEtBackgroundDrawableFocus);
                 if (i < mEtNumber - 1) {
-                    mPwdTextViews[i + 1].setBackgroundDrawable(mEtBackgroundDrawableNormal);
+                    mTextViews[i + 1].setBackgroundDrawable(mEtBackgroundDrawableNormal);
                 }
                 break;
+            }
+        }
+        if (TextUtils.isEmpty(mTextViews[mEtNumber - 1].getText().toString())) {
+            if (mEtToggleIconOpen != null && mEtToggleIconClose != null) {
+                this.findViewById(R.id.btn_watch_paw).setVisibility(VISIBLE);
+                this.findViewById(R.id.btn_watch_paw).setBackgroundDrawable(mEtToggleIconClose);
             }
         }
     }
@@ -237,7 +323,7 @@ public class VerificationCodeView extends RelativeLayout {
      */
     public String getInputContent() {
         StringBuffer buffer = new StringBuffer();
-        for (TextView tv : mPwdTextViews) {
+        for (TextView tv : mTextViews) {
             buffer.append(tv.getText().toString().trim());
         }
         return buffer.toString();
@@ -247,16 +333,13 @@ public class VerificationCodeView extends RelativeLayout {
      * 删除输入内容
      */
     public void clearInputContent() {
-        for (int i = 0; i < mPwdTextViews.length; i++) {
+        for (int i = 0; i < mTextViews.length; i++) {
             if (i == 0) {
-                mPwdTextViews[i].setBackgroundDrawable(mEtBackgroundDrawableFocus);
+                mTextViews[i].setBackgroundDrawable(mEtBackgroundDrawableFocus);
             } else {
-                mPwdTextViews[i].setBackgroundDrawable(mEtBackgroundDrawableNormal);
+                mTextViews[i].setBackgroundDrawable(mEtBackgroundDrawableNormal);
             }
-            if (mEtPwd) {
-                mPwdTextViews[i].clearPwd();
-            }
-            mPwdTextViews[i].setText("");
+            mTextViews[i].setText("");
         }
     }
 
@@ -344,11 +427,8 @@ public class VerificationCodeView extends RelativeLayout {
         public void afterTextChanged(Editable editable) {
             String inputStr = editable.toString();
             if (!TextUtils.isEmpty(inputStr)) {
-
                 String[] strArray = inputStr.split("");
-
                 for (int i = 0; i < strArray.length; i++) {
-
                     // 不能大于输入框个数
                     if (i > mEtNumber) {
                         break;
@@ -359,6 +439,4 @@ public class VerificationCodeView extends RelativeLayout {
             }
         }
     }
-
-
 }

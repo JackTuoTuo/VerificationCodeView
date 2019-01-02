@@ -21,4 +21,14 @@
         android:background="@android:color/transparent"
         android:inputType="number" />
 
+    <TextView
+        android:id="@+id/btn_watch_paw"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/container_et"
+        android:padding="20dp"
+        android:visibility="gone" />
+
 </RelativeLayout>

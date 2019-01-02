@@ -70,5 +70,4 @@ public class TInputConnection extends InputConnectionWrapper {
         }
         return super.sendKeyEvent(event);
     }
-
 }
