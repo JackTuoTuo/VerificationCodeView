@@ -12,7 +12,7 @@ VerificationCodeView  —正方形验证码输入框
 
 ### 示例:
 
-![动图演示](https://github.com/JackTuoTuo/VerificationCodeView/blob/master/GIF3.gif)
+![动图演示](https://github.com/rgdzh1/VerificationCodeView/blob/temp_pr/GIF3.gif)
 ![动图演示](https://github.com/JackTuoTuo/VerificationCodeView/blob/master/GIF.gif)
 ![动图演示](https://github.com/JackTuoTuo/VerificationCodeView/blob/master/GIF2.gif)
 
