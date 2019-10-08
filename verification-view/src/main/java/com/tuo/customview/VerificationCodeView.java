@@ -217,12 +217,13 @@ public class VerificationCodeView extends RelativeLayout {
                 }
                 tv.setText("");
                 // 添加删除完成监听
-                if (inputCompleteListener != null) {
-                    inputCompleteListener.deleteContent();
-                }
-                tv.setBackgroundDrawable(mEtBackgroundDrawableFocus);
+                tv.setBackgroundDrawable(mEtBackgroundDrawableNormal);
                 if (i < mEtNumber - 1) {
-                    mPwdTextViews[i + 1].setBackgroundDrawable(mEtBackgroundDrawableNormal);
+                    mPwdTextViews[i + 1].setBackgroundDrawable(mEtBackgroundDrawableFocus);
+                }
+                // 添加输入完成的监听
+                if (inputCompleteListener != null) {
+                    inputCompleteListener.inputComplete();
                 }
                 break;
             }
