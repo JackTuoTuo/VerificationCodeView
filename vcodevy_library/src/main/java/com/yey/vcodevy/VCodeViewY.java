@@ -76,6 +76,7 @@ public class VCodeViewY extends FrameLayout {
         typedArray.recycle();
     }
 
+
     private void creatView() {
         initEditText();
         mTextViewList = new ArrayList<>();
