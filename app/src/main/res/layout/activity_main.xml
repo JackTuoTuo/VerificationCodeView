@@ -5,42 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <!--app:icv_et_pwd_radius="10dp"-->
-    <!--app:icv_et_toggle_icon_close="@mipmap/hide_pass"-->
-    <!--app:icv_et_toggle_icon_open="@mipmap/watch_pass"-->
-    <com.tuo.customview.VerificationCodeView
-        android:id="@+id/icv"
+
+
+    <com.yey.vcodevy.VCodeViewY
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginRight="10dp"
-        app:icv_et_bg_focus="@drawable/shape_icv_et_bg_focus"
-        app:icv_et_bg_normal="@drawable/shape_icv_et_bg_normal"
-        app:icv_et_divider_drawable="@drawable/shape_divider_identifying"
-        app:icv_et_number="6"
-        app:icv_et_pwd="true"
-        app:icv_et_pwd_mode="2"
-        app:icv_et_text_color="#000000"
-        app:icv_et_toggle_icon_close="@mipmap/hide_pass"
-        app:icv_et_toggle_icon_open="@mipmap/watch_pass"
-        app:icv_et_width="40dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"
-        android:onClick="onClick"
-        android:text="清空" />
-
-
-    <com.tuo.customview.VerificationCodeView
-        android:id="@+id/icv_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:icv_et_number="5" />
+        app:box_bum="5"
+        app:box_input_type="number"
+        app:box_margin="5dp"
+        app:box_pwd_modle="false"
+        app:box_size_parent_height_rate="0.8"
+        app:box_text_color="@color/colorPrimary"
+        app:box_text_size="14dp" />
 
 
 </LinearLayout>
