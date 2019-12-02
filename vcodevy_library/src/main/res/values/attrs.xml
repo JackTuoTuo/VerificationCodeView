@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="VCodeViewY">
+        <!--        输入框数量-->
+        <attr name="box_bum" format="integer" />
+        <!--        输入框间隔距离-->
+        <attr name="box_margin" format="dimension|reference" />
+        <!--        输入框相对于父容器高度的百分比-->
+        <attr name="box_size_parent_height_rate" format="float" />
+        <!--        输入框文字大小-->
+        <attr name="box_text_size" format="dimension|reference" />
+        <!--        输入框文字颜色-->
+        <attr name="box_text_color" format="color" />
+        <!--        输入框获取焦点时候的边框-->
+        <attr name="box_focus" format="reference" />
+        <!--         输入框失去焦点时候的边框-->
+        <attr name="box_not_focus" format="reference" />
+        <!--        输入框是否是密码模式-->
+        <attr name="box_pwd_modle" format="boolean" />
+        <!--        输入框可以输入的是数字还是文本-->
+        <attr name="box_input_type">
+            <enum name="number" value="0" />
+            <enum name="text" value="1" />
+        </attr>
+
+    </declare-styleable>
+</resources>
